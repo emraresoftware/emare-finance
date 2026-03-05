@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Ortam değişkenleri (API anahtarları burada — asla commit'leme)
+.env
+
+# Veriler ve loglar
+data/
+logs/
+
+# macOS
+.DS_Store
+
+# Node (DevM modülü için)
+node_modules/
+
+# IDE
+.vscode/
+.idea/

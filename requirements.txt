@@ -1,0 +1,23 @@
+# Emare Finance - Sistem Gereksinimleri
+# ======================================
+# Bu bir Laravel + Node.js projesidir. Python bağımlılığı yoktur.
+#
+# PHP Gereksinimleri:
+#   - PHP >= 8.2
+#   - Composer >= 2.x
+#   - ext-pdo_sqlite
+#   - ext-mbstring
+#   - ext-openssl
+#   - ext-tokenizer
+#   - ext-xml
+#   - ext-ctype
+#   - ext-json
+#
+# Kurulum:
+#   1. composer install
+#   2. npm install
+#   3. cp .env.example .env
+#   4. php artisan key:generate
+#   5. touch database/database.sqlite
+#   6. php artisan migrate
+#   7. php artisan serve

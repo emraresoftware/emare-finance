@@ -1,0 +1,44 @@
+# ============================================
+# Emare Hub — Merkezi Konfigürasyon (v0.2)
+# ============================================
+
+hub:
+  name: "Emare Hub"
+  version: "0.2.0"
+  environment: "development"    # development | staging | production
+
+paths:
+  modules_dir: "./modules"
+  data_dir: "./data"
+  logs_dir: "./logs"
+  scripts_dir: "./scripts"
+  prompts_dir: "./prompts"
+
+logging:
+  level: "INFO"                 # DEBUG | INFO | WARNING | ERROR
+  file: "logs/emare_hub.log"
+  max_size_mb: 10
+  backup_count: 5
+
+registry:
+  file: "data/registry.json"
+  auto_save: true
+
+ai:
+  default_provider: "gemini"    # gemini | openai
+  gemini:
+    model: "gemini-2.0-flash"
+    max_tokens: 8192
+  openai:
+    model: "gpt-4o"
+    max_tokens: 4096
+
+modules:
+  auto_register: true           # Modül üretildiğinde otomatik kayıt
+  health_check_interval: 60     # saniye
+  allowed_types:
+    - "standard_module"
+    - "crm_module"
+    - "devm_platform"
+    - "analytics_module"
+    - "dashboard_module"

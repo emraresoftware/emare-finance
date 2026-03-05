@@ -1,0 +1,47 @@
+#!/bin/bash
+# ═══════════════════════════════════════════════════════════════
+# Emare Finance — Git Post-Receive Hook
+# Bu dosya sunucudaki bare repo'ya konur:
+#   /var/www/emare-finance/repo/hooks/post-receive
+#
+# Git push yapıldığında otomatik deploy tetiklenir.
+# Kullanım:
+#   Yerel makinede: git remote add production ssh://user@sunucu/var/www/emare-finance/repo
+#   Deploy:         git push production main
+# ═══════════════════════════════════════════════════════════════
+
+BASE_DIR="/var/www/emare-finance"
+DEPLOY_SCRIPT="$BASE_DIR/deploy-zero.sh"
+DEPLOY_LOG="$BASE_DIR/deploy.log"
+DEPLOY_BRANCH="main"
+
+echo ""
+echo "═══════════════════════════════════════════════════"
+echo "  📨 Push alındı — $(date '+%Y-%m-%d %H:%M:%S')"
+echo "═══════════════════════════════════════════════════"
+
+# Hangi branch push edildi kontrol et
+while read oldrev newrev refname; do
+    BRANCH=$(echo "$refname" | sed 's|refs/heads/||')
+
+    echo "  Branch: $BRANCH"
+    echo "  Commit: $(echo $newrev | head -c 8)"
+
+    if [ "$BRANCH" = "$DEPLOY_BRANCH" ]; then
+        echo ""
+        echo "  🚀 $DEPLOY_BRANCH branch'ine push algılandı."
+        echo "  ⚡ Zero-downtime deploy başlatılıyor..."
+        echo ""
+
+        # Deploy'u arka planda çalıştır (push'un bitmesini beklemesin)
+        nohup bash "$DEPLOY_SCRIPT" >> "$DEPLOY_LOG" 2>&1 &
+        DEPLOY_PID=$!
+
+        echo "  ✅ Deploy başlatıldı (PID: $DEPLOY_PID)"
+        echo "  📋 Log: tail -f $DEPLOY_LOG"
+    else
+        echo "  ⏭️  $BRANCH branch'i — deploy atlanıyor (sadece $DEPLOY_BRANCH deploy edilir)"
+    fi
+done
+
+echo ""
