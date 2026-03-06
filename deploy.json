@@ -1,0 +1,22 @@
+{
+  "slug": "Emare Finance",
+  "name": "Emare Finance",
+  "github_repo": "emraresoftware/emare-finance",
+  "branch": "main",
+  "dc": "dc2",
+  "server_host": "77.92.152.3",
+  "server_ssh_port": 2222,
+  "remote_path": "/var/www/emare-finance",
+  "stack": "python-gunicorn",
+  "port": 8200,
+  "domain": "finans.emarecloud.tr",
+  "deploy_commands": [
+    "cd /var/www/emare-finance",
+    "git pull origin main",
+    "source venv/bin/activate && pip install -r requirements.txt -q",
+    "sudo systemctl restart Emare Finance"
+  ],
+  "restart_command": "systemctl status Emare Finance --no-pager",
+  "auto_deploy_on_push": true,
+  "health_check_url": "https://finans.emarecloud.tr/api/health"
+}
