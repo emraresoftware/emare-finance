@@ -21,14 +21,19 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email'    => ['required', 'email'],
+        $validated = $request->validate([
+            'login'    => ['required', 'string'],
             'password' => ['required'],
         ], [
-            'email.required'    => 'E-posta adresi gereklidir.',
-            'email.email'       => 'Geçerli bir e-posta adresi girin.',
+            'login.required'    => 'Kullanıcı adı veya e-posta gereklidir.',
             'password.required' => 'Şifre gereklidir.',
         ]);
+
+        $loginField = filter_var($validated['login'], FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
+        $credentials = [
+            $loginField => $validated['login'],
+            'password'  => $validated['password'],
+        ];
 
         $remember = $request->boolean('remember');
 
@@ -43,7 +48,7 @@ class LoginController extends Controller
                 $request->session()->regenerateToken();
 
                 return back()->withErrors([
-                    'email' => 'Hesabınız askıya alınmıştır. Destek ile iletişime geçin.',
+                    'login' => 'Hesabınız askıya alınmıştır. Destek ile iletişime geçin.',
                 ]);
             }
 
@@ -51,8 +56,8 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Girdiğiniz bilgiler kayıtlarımızla eşleşmiyor.',
-        ])->onlyInput('email', 'remember');
+            'login' => 'Girdiğiniz bilgiler kayıtlarımızla eşleşmiyor.',
+        ])->onlyInput('login', 'remember');
     }
 
     /**

@@ -52,10 +52,10 @@ class DemoUserSeeder extends Seeder
 
         // 5) Demo admin kullanıcı
         $admin = User::firstOrCreate(
-            ['email' => 'admin@emarefinance.com'],
+            ['email' => 'emre@emareas.com'],
             [
-                'name'           => 'Admin Kullanıcı',
-                'password'       => Hash::make('password'),
+                'name'           => 'emre',
+                'password'       => Hash::make('Emre2025'),
                 'tenant_id'      => $tenant->id,
                 'branch_id'      => $branch->id,
                 'role_id'        => $adminRole?->id,
@@ -63,10 +63,15 @@ class DemoUserSeeder extends Seeder
             ]
         );
 
-        // Mevcut admin'i super admin yap (eğer zaten varsa)
-        if (!$admin->is_super_admin) {
-            $admin->update(['is_super_admin' => true]);
-        }
+        // Mevcut admin kullanıcıyı istenen varsayılanlara senkronize et
+        $admin->update([
+            'name'           => 'emre',
+            'password'       => Hash::make('Emre2025'),
+            'tenant_id'      => $tenant->id,
+            'branch_id'      => $branch->id,
+            'role_id'        => $adminRole?->id,
+            'is_super_admin' => true,
+        ]);
 
         // user_roles pivot
         if ($adminRole) {
@@ -114,7 +119,7 @@ class DemoUserSeeder extends Seeder
         }
 
         $this->command->info('✅ Demo kullanıcılar oluşturuldu:');
-        $this->command->info('   Admin  → admin@emarefinance.com / password');
+        $this->command->info('   Admin  → emre@emareas.com / Emre2025');
         $this->command->info('   Kasiyer → kasiyer@emarefinance.com / password');
     }
 }
